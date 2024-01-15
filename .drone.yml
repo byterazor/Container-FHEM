@@ -109,7 +109,7 @@ steps:
       path: /etc/ssl/certs2/
     commands:
       - scripts/setupEnvironment.sh
-      - buildah login -u ${USERNAME} -p ${PASSWORD} hub.docker.com
+      - buildah login -u $${USERNAME} -p $${PASSWORD} hub.docker.com
       - buildah manifest push registry.cloud.federationhq.de/fhem:latest docker://hub.docker.com/byterazor/fhem:latest 
       - buildah manifest rm registry.cloud.federationhq.de/fhem:latest
 depends_on:
