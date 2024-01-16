@@ -111,7 +111,7 @@ steps:
       - scripts/setupEnvironment.sh
       - buildah login -u $${USERNAME} -p $${PASSWORD} docker.com
       - buildah manifest create docker.com/byterazor/fhem:latest registry.cloud.federationhq.de/fhem:latest-arm64 registry.cloud.federationhq.de/fhem:latest-amd64
-      - buildah manifest push docker.com/byterazor/fhem:latest 
+      - buildah manifest push --all docker.com/byterazor/fhem:latest 
       - buildah manifest rm docker.com/byterazor/fhem:latest
 depends_on:
   - push
