@@ -1,34 +1,70 @@
-# FHEM Home Automation System Container
+---
+lang: EN_US
+---
 
-This repository contains the source code to build a container image for running the FHEM home automation system using Buildah.
+# FHEM Home Automation System Container Image
 
-## Introduction
+## Description
 
-FHEM (Flexible Home Automation) is a Perl server for home automation. It is used to automate tasks in the household like switching lamps, shutters, heating, etc. and to log events like temperature, humidity, power consumption.
+FHEM (Flexible Home Automation) is a Perl server for home automation. It is used to automate 
+tasks in the household like switching lamps, shutters, heating, etc. and to log events like 
+temperature, humidity, power consumption.
 
-## Building the Container
+###  Attention
+This image is intended for my personal use in the first place. 
 
-To build the container image, we will use Buildah, a tool that facilitates building OCI container images.
+If you find it usefull I am happy but I will not devide from my personal goals 
+to support other people.
 
-```bash
-buildah bud -t fhem .
-```
+## Security
 
-This command builds the container image using the Containerfile in the current directory and tags the image as `fhem`.
+- fhem is runing as the fhem user in the container
+- the root filesystem within the container can be mounted read-only (no updates from within fhem possible)
+- image updates also update all fhem related files 
+- use of *configDB* and *logDB* is mandatory
 
-## Running the Container
+## Supported Architectures
 
-Once the image is built, you can run the FHEM container with the following command:
+- amd64
+- arm64
 
-```bash
-podman run -d -p 8083:8083 fhem
-```
+## Updates
 
-This command runs the container in the background, mapping port 8083 in the container to port 8083 on the host machine.
+I am trying to update the image weekly as long as my private kubernetes cluster is available. So I do not promise anything and do **not** rely 
+your business on this image.
 
-## Accessing FHEM
+## Prerequisities
 
-Once the container is running, you can access the FHEM web interface by navigating to `http://localhost:8083/fhem` in your web browser.
+A container runtime like
+
+* docker 
+* podman
+* kubernetes
+
+
+## Container Parameters
+
+* `CONFIG_DATABASE_ENGINE` - which database engine to use for configDB (supported: sqlite and mysql)
+* `CONFIG_DATABASE` - the database name (in case of sqlite the path to the db file)
+* `CONFIG_DATABASE_USER` - the username required to login to the database server (in case of sqlite ignored)
+* `CONFIG_DATABASE_PASS` - the password requried to login to the database server (in case of sqlite ignored)
+* `LOG_DATABASE_ENGINE` - the database engine to use for logDB (supported: sqlite and mysql)
+* `LOG_DATABASE` - the database name (in case of sqlite the path to the db file)
+* `LOG_DATABASE_USER` - the username required to login to the database server (in case of sqlite ignored)
+* `LOG_DATABASE_PASS` - the password requried to login to the database server (in case of sqlite ignored)
+
+
+## Volumes
+In case you want to use sqlite you have to mount a volume at */mnt/* within the container and use 
+it as the directory for you database.
+ 
+## Source Repository
+
+* https://gitea.federationhq.de/Container/fhem.git
+
+## Authors
+
+* **Dominik Meyer** - *Initial work* 
 
 ## License
 
