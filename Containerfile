@@ -30,6 +30,7 @@ RUN cd /usr/src/sispmctl;make; ls -al
 
 RUN git clone https://github.com/fhem/fhem-mirror.git /fhem-src;cd /fhem-src;git checkout main
 RUN git clone https://gitea.federationhq.de/byterazor/FHEM-NEWSISPM.git /NEWSISPM
+RUN git clone https://gitea.federationhq.de/byterazor/FHEM-NTFY.git /FHEM-NTFY
 
 #
 # the main fhem image
@@ -265,6 +266,8 @@ COPY --from=builder  /usr/src/sispmctl/src/.libs/*.so* /usr/lib/
 COPY --from=builder  /usr/src/sispmctl/src/.libs/sispmctl /usr/bin/
 COPY --from=builder  /fhem-src/fhem /opt/fhem
 COPY --from=builder  /NEWSISPM/FHEM/* /opt/fhem/FHEM/
+COPY --from=builder  /FHEM-NTFY/FHEM/* /opt/fhem/FHEM/
+
 # update libraries
 RUN ldconfig
 
