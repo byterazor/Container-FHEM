@@ -28,6 +28,14 @@ to support other people.
 - amd64
 - arm64
 
+## External Modules
+
+I am using some external modules. As you can not add remote repositories at runtime I am including them 
+within the image.
+
+* https://gitea.federationhq.de/byterazor/FHEM-NTFY
+* https://gitea.federationhq.de/byterazor/FHEM-NEWSISPM
+
 ## Updates
 
 I am trying to update the image weekly as long as my private kubernetes cluster is available. So I do not promise anything and do **not** rely 
