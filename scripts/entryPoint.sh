@@ -28,9 +28,32 @@ else
             user => "",
             password => ""
         );
-        EOF
+        EOF 
         `" >> /opt/fhem/configDB.conf;
+    elif [ "${CONFIG_DATABASE_ENGINE}" == "mysql" ] then
+
+        if [ -z ${CONFIG_DATABASE_USER} ]; then
+            echo "please provide CONFIG_DATABASE_USER "
+            exit 255
+        fi
+
+        if [ -z ${CONFIG_DATABASE_USER} ]; then
+            echo "please provide CONFIG_DATABASE_ "
+            exit 255
+        fi
+
+        echo "`cat <<EOF
+        %dbconfig= (
+            connection => "mysql:dbname=${CONFIG_DATABASE}",
+            user => "${CONFIG_DATABASE_USER}",
+            password => "${CONFIG_DATABASE_PASS}"
+        );
+        EOF
+    else
+        echo "unknown database engine provided in CONFIG_DATABASE_ENGINE"
+        exit 255
     fi
+
 
 fi
 
@@ -59,6 +82,28 @@ if [ -n "${USELOGDB}" ]; then
         );
         EOF
         `" >> /opt/fhem/db.conf;
+    elif [ "${LOG_DATABASE_ENGINE}" == "mysql" ] then
+
+        if [ -z ${LOG_DATABASE_USER} ]; then
+            echo "please provide LOG_DATABASE_USER "
+            exit 255
+        fi
+
+        if [ -z ${LOG_DATABASE_USER} ]; then
+            echo "please provide LOG_DATABASE_ "
+            exit 255
+        fi
+
+        echo "`cat <<EOF
+        %dbconfig= (
+            connection => "mysql:dbname=${LOG_DATABASE}",
+            user => "${LOG_DATABASE_USER}",
+            password => "${LOG_DATABASE_PASS}"
+        );
+        EOF
+    else
+        echo "unknown database engine provided in LOG_DATABASE_ENGINE"
+        exit 255
     fi
 
 fi
