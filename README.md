@@ -22,6 +22,7 @@ to support other people.
 - the root filesystem within the container can be mounted read-only (no updates from within fhem possible)
 - image updates also update all fhem related files 
 - use of *configDB* and *logDB* is mandatory
+- no nodejs crap installed by default
 
 ## Supported Architectures
 
