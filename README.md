@@ -6,7 +6,7 @@ lang: EN_US
 
 ## Description
 
-FHEM (Flexible Home Automation) is a Perl server for home automation. It is used to automate 
+[FHEM (Flexible Home Automation)](https://fhem.de)  is a Perl server for home automation. It is used to automate 
 tasks in the household like switching lamps, shutters, heating, etc. and to log events like 
 temperature, humidity, power consumption.
 
