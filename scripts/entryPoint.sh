@@ -1,5 +1,24 @@
 #!/bin/bash
 
+write_config_file()
+{
+    FILE=$1
+    ENGINE=$2
+    DATABASE=$3
+    USER=$4
+    PASS=$5
+
+    echo '%dbconfig= (' >> $FILE;
+    echo "      connection => \"${ENGINE}:dbname=${DATABASE}\"," >> $FILE
+    echo "      user => \"$USER\"," >> $FILE
+    echo "      password => \"$PASS\"" >> $FILE
+    echo ');' >> $FILE
+
+}
+
+CONFIGDBFILE=/opt/fhem/configDB.conf
+LOGDBFILE=/opt/fhem/db.conf
+
 
 if [ -z ${CONFIG_DATABASE_ENGINE} ]; then
     CONFIG_DATABASE_ENGINE=sqlite
@@ -16,14 +35,9 @@ if [ -z ${CONFIG_DATABASE} ]; then
 fi
 
 if [ "${CONFIG_DATABASE_ENGINE}" == "sqlite" ]; then
-    echo "`cat <<EOF
-    %dbconfig= (
-        connection => "SQLite:dbname=${CONFIG_DATABASE}",
-        user => "",
-        password => ""
-    );
-    EOF 
-    `" >> /opt/fhem/configDB.conf;
+    
+    write_config_file "${CONFIGDBFILE}" "SQLite" "${CONFIG_DATABASE}" "" "";
+
 elif [ "${CONFIG_DATABASE_ENGINE}" == "mysql" ]; then
 
     if [ -z ${CONFIG_DATABASE_USER} ]; then
@@ -36,14 +50,8 @@ elif [ "${CONFIG_DATABASE_ENGINE}" == "mysql" ]; then
         exit 255
     fi
 
-    echo "`cat <<EOF
-    %dbconfig= (
-        connection => "mysql:dbname=${CONFIG_DATABASE}",
-        user => "${CONFIG_DATABASE_USER}",
-        password => "${CONFIG_DATABASE_PASS}"
-    );
-    EOF
-    `" >> /opt/fhem/configDB.conf;
+    write_config_file "${CONFIGDBFILE}" "mysql", "${CONFIG_DATABASE}" "${CONFIG_DATABASE_USER}" "${CONFIG_DATABASE_PASS}"
+
 else
     echo "unknown database engine provided in CONFIG_DATABASE_ENGINE"
     exit 255
@@ -65,15 +73,10 @@ fi
 
 
 if [ "${LOG_DATABASE_ENGINE}" == "sqlite" ]; then
-    echo "`cat <<EOF
-    %dbconfig= (
-        connection => "SQLite:dbname=${LOG_DATABASE}",
-        user => "",
-        password => ""
-    );
-    EOF
-    `" >> /opt/fhem/db.conf;
-elif [ "${LOG_DATABASE_ENGINE}" == "mysql" ] then
+
+    write_config_file "${LOGDBFILE}" "SQLite" "${LOG_DATABASE}" "" ""
+
+elif [ "${LOG_DATABASE_ENGINE}" == "mysql" ]; then
 
     if [ -z ${LOG_DATABASE_USER} ]; then
         echo "please provide LOG_DATABASE_USER "
@@ -85,14 +88,8 @@ elif [ "${LOG_DATABASE_ENGINE}" == "mysql" ] then
         exit 255
     fi
 
-    echo "`cat <<EOF
-    %dbconfig= (
-        connection => "mysql:dbname=${LOG_DATABASE}",
-        user => "${LOG_DATABASE_USER}",
-        password => "${LOG_DATABASE_PASS}"
-    );
-    EOF
-    `" >> /opt/fhem/db.conf;
+    write_config_file "${LOGDBFILE}" "mysql" "${LOG_DATABASE}" "${LOG_DATABASE_USER}" "${LOG_DATABASE_PASS}"
+
 else
     echo "unknown database engine provided in LOG_DATABASE_ENGINE"
     exit 255
@@ -101,4 +98,4 @@ fi
 
 export FHEM_GLOBALATTR="nofork=1 updateInBackground=1 logfile=/dev/stdout"
 cd /opt/fhem || exit 255
-./fhem.pl confgDB
+./fhem.pl configDB
