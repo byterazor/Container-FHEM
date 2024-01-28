@@ -71,6 +71,10 @@ it as the directory for you database.
 
 * https://gitea.federationhq.de/Container/fhem.git
 
+## Prebuild Images
+
+* https://hub.docker.com/repository/docker/byterazor/fhem/general
+
 ## Authors
 
 * **Dominik Meyer** - *Initial work* 
