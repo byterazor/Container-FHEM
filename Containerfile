@@ -268,6 +268,8 @@ COPY --from=builder  /fhem-src/fhem /opt/fhem
 COPY --from=builder  /NEWSISPM/FHEM/* /opt/fhem/FHEM/
 COPY --from=builder  /FHEM-NTFY/FHEM/* /opt/fhem/FHEM/
 
+RUN cd /opt/fhem; contrib/commandref_join.pl
+
 # update libraries
 RUN ldconfig
 
