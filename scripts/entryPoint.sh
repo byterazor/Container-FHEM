@@ -7,9 +7,14 @@ write_config_file()
     DATABASE=$3
     USER=$4
     PASS=$5
+    HOST=$6
+
+    if [ -n $HOST ]; then
+        HOST=";host=${HOST}"
+    fi
 
     echo '%dbconfig= (' >> $FILE;
-    echo "      connection => \"${ENGINE}:dbname=${DATABASE}\"," >> $FILE
+    echo "      connection => \"${ENGINE}:dbname=${DATABASE}${HOST}\"," >> $FILE
     echo "      user => \"$USER\"," >> $FILE
     echo "      password => \"$PASS\"" >> $FILE
     echo ');' >> $FILE
@@ -40,6 +45,10 @@ if [ "${CONFIG_DATABASE_ENGINE}" == "sqlite" ]; then
 
 elif [ "${CONFIG_DATABASE_ENGINE}" == "mysql" ]; then
 
+    if [ -z ${CONFIG_DATABASE_HOST} ]; then
+        CONFIG_DATABASE_HOST="localhost"
+    fi
+
     if [ -z ${CONFIG_DATABASE_USER} ]; then
         echo "please provide CONFIG_DATABASE_USER "
         exit 255
@@ -50,7 +59,7 @@ elif [ "${CONFIG_DATABASE_ENGINE}" == "mysql" ]; then
         exit 255
     fi
 
-    write_config_file "${CONFIGDBFILE}" "mysql", "${CONFIG_DATABASE}" "${CONFIG_DATABASE_USER}" "${CONFIG_DATABASE_PASS}"
+    write_config_file "${CONFIGDBFILE}" "mysql", "${CONFIG_DATABASE}" "${CONFIG_DATABASE_USER}" "${CONFIG_DATABASE_PASS}" "${CONFIG_DATABASE_HOST}"
 
 else
     echo "unknown database engine provided in CONFIG_DATABASE_ENGINE"
@@ -77,6 +86,10 @@ if [ "${LOG_DATABASE_ENGINE}" == "sqlite" ]; then
     write_config_file "${LOGDBFILE}" "SQLite" "${LOG_DATABASE}" "" ""
 
 elif [ "${LOG_DATABASE_ENGINE}" == "mysql" ]; then
+    
+    if [ -z ${LOG_DATABASE_HOST} ]; then
+        CONFIG_DATABASE_HOST="localhost"
+    fi
 
     if [ -z ${LOG_DATABASE_USER} ]; then
         echo "please provide LOG_DATABASE_USER "
@@ -88,7 +101,7 @@ elif [ "${LOG_DATABASE_ENGINE}" == "mysql" ]; then
         exit 255
     fi
 
-    write_config_file "${LOGDBFILE}" "mysql" "${LOG_DATABASE}" "${LOG_DATABASE_USER}" "${LOG_DATABASE_PASS}"
+    write_config_file "${LOGDBFILE}" "mysql" "${LOG_DATABASE}" "${LOG_DATABASE_USER}" "${LOG_DATABASE_PASS}" "${LOG_DATABASE_HOST}"
 
 else
     echo "unknown database engine provided in LOG_DATABASE_ENGINE"
