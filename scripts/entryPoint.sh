@@ -59,7 +59,7 @@ elif [ "${CONFIG_DATABASE_ENGINE}" == "mysql" ]; then
         exit 255
     fi
 
-    write_config_file "${CONFIGDBFILE}" "mysql", "${CONFIG_DATABASE}" "${CONFIG_DATABASE_USER}" "${CONFIG_DATABASE_PASS}" "${CONFIG_DATABASE_HOST}"
+    write_config_file "${CONFIGDBFILE}" "mysql" "${CONFIG_DATABASE}" "${CONFIG_DATABASE_USER}" "${CONFIG_DATABASE_PASS}" "${CONFIG_DATABASE_HOST}"
 
 else
     echo "unknown database engine provided in CONFIG_DATABASE_ENGINE"
