@@ -28,7 +28,7 @@ RUN cd /usr/src; git clone https://github.com/xypron/sispmctl.git
 RUN cd /usr/src/sispmctl;./autogen.sh && ./configure --enable-webless
 RUN cd /usr/src/sispmctl;make; ls -al
 
-RUN git clone https://github.com/fhem/fhem-mirror.git /fhem-src;cd /fhem-src;git checkout main
+RUN git clone https://github.com/fhem/fhem-mirror.git /fhem-src;cd /fhem-src;git checkout master
 RUN git clone https://gitea.federationhq.de/byterazor/FHEM-NEWSISPM.git /NEWSISPM
 RUN git clone https://gitea.federationhq.de/byterazor/FHEM-NTFY.git /FHEM-NTFY
 RUN git clone https://gitea.federationhq.de/byterazor/FHEM-Lightcontrol.git /FHEM-Lightcontrol
