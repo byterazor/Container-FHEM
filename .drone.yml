@@ -86,7 +86,7 @@ steps:
       - buildah manifest push --all fhem:latest docker://registry.cloud.federationhq.de/fhem:latest
       - buildah login -u $${USERNAME} -p $${PASSWORD} registry.hub.docker.com
       - buildah manifest push --all fhem:latest docker://registry.hub.docker.com/byterazor/fhem:latest 
-      - buildah manifest fhem:latest
+      - buildah manifest rm fhem:latest
 
 depends_on:
   - build-amd64
