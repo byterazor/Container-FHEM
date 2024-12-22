@@ -32,6 +32,7 @@ RUN git clone https://github.com/fhem/fhem-mirror.git /fhem-src;cd /fhem-src;git
 RUN git clone https://gitea.federationhq.de/byterazor/FHEM-NEWSISPM.git /NEWSISPM
 RUN git clone https://gitea.federationhq.de/byterazor/FHEM-NTFY.git /FHEM-NTFY
 RUN git clone https://gitea.federationhq.de/byterazor/FHEM-Lightcontrol.git /FHEM-Lightcontrol
+RUN git clone https://github.com/PatricSperling/FHEM_SST.git /SST
 
 #
 # the main fhem image
@@ -269,6 +270,8 @@ COPY --from=builder  /fhem-src/fhem /opt/fhem
 COPY --from=builder  /NEWSISPM/FHEM/* /opt/fhem/FHEM/
 COPY --from=builder  /FHEM-NTFY/FHEM/* /opt/fhem/FHEM/
 COPY --from=builder  /FHEM-Lightcontrol/FHEM/* /opt/fhem/FHEM/
+COPY --from=builder  /SST/FHEM/* /opt/fhem/FHEM/
+COPY --from=builder  /SST/www/* /opt/fhem/www/
 
 RUN cd /opt/fhem; contrib/commandref_join.pl
 
