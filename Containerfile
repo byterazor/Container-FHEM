@@ -34,6 +34,9 @@ RUN git clone https://gitea.federationhq.de/byterazor/FHEM-NTFY.git /FHEM-NTFY
 RUN git clone https://gitea.federationhq.de/byterazor/FHEM-Lightcontrol.git /FHEM-Lightcontrol
 RUN git clone https://github.com/PatricSperling/FHEM_SST.git /SST
 
+# patch LA_Metric to support any apikey
+RUN sed 's/.*apikey does not.*//' -i /fhem-src/fhem/FHEM/70_LaMetric2.pm
+RUN sed 's/.*apikey \!.*//' -i /fhem-src/fhem/FHEM/70_LaMetric2.pm
 #
 # the main fhem image
 #

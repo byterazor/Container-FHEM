@@ -37,6 +37,10 @@ within the image.
 * https://gitea.federationhq.de/byterazor/FHEM-NTFY
 * https://gitea.federationhq.de/byterazor/FHEM-NEWSISPM
 
+## Patches
+
+- Patched 70_LaMetric2.pm to support any apikey (github issue https://github.com/fhem/mod-LaMetric2/issues/1)
+
 ## Updates
 
 I am trying to update the image weekly as long as my private kubernetes cluster is available. So I do not promise anything and do **not** rely 
