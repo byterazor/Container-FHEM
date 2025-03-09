@@ -22,21 +22,21 @@ LABEL license="MIT"
 FROM debian:bookworm-slim as builder
 
 # Ensure we have a build environment
-RUN apt-get -q -y update && apt-get -q -y install git build-essential pkg-config libtool libusb-dev autoconf
+RUN apt-get -q -y update && apt-get -q -y install git subversion build-essential pkg-config libtool libusb-dev autoconf locales-all
 
 RUN cd /usr/src; git clone https://github.com/xypron/sispmctl.git
 RUN cd /usr/src/sispmctl;./autogen.sh && ./configure --enable-webless
 RUN cd /usr/src/sispmctl;make; ls -al
 
-RUN git clone https://github.com/fhem/fhem-mirror.git /fhem-src;cd /fhem-src;git checkout master
+RUN export LC_CTYPE=en_US.UTF-8;svn co https://svn.fhem.de/fhem/trunk/fhem
 RUN git clone https://gitea.federationhq.de/byterazor/FHEM-NEWSISPM.git /NEWSISPM
 RUN git clone https://gitea.federationhq.de/byterazor/FHEM-NTFY.git /FHEM-NTFY
 RUN git clone https://gitea.federationhq.de/byterazor/FHEM-Lightcontrol.git /FHEM-Lightcontrol
 RUN git clone https://github.com/PatricSperling/FHEM_SST.git /SST
 
 # patch LA_Metric to support any apikey
-RUN sed 's/.*apikey does not.*//' -i /fhem-src/fhem/FHEM/70_LaMetric2.pm
-RUN sed 's/.*apikey \!.*//' -i /fhem-src/fhem/FHEM/70_LaMetric2.pm
+RUN sed 's/.*apikey does not.*//' -i /fhem/FHEM/70_LaMetric2.pm
+RUN sed 's/.*apikey \!.*//' -i /fhem/FHEM/70_LaMetric2.pm
 #
 # the main fhem image
 #
@@ -269,7 +269,7 @@ RUN apt-get -qqy install --no-install-recommends \
 # install fhem dependencies from builder image
 COPY --from=builder  /usr/src/sispmctl/src/.libs/*.so* /usr/lib/
 COPY --from=builder  /usr/src/sispmctl/src/.libs/sispmctl /usr/bin/
-COPY --from=builder  /fhem-src/fhem /opt/fhem
+COPY --from=builder  /fhem /opt/fhem
 COPY --from=builder  /NEWSISPM/FHEM/* /opt/fhem/FHEM/
 COPY --from=builder  /FHEM-NTFY/FHEM/* /opt/fhem/FHEM/
 COPY --from=builder  /FHEM-Lightcontrol/FHEM/* /opt/fhem/FHEM/
